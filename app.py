@@ -60,7 +60,7 @@ def confirm():
             # Do something if user confirms 'no'
             # Step 1: Write the LaTeX Template
             latex_template = r'''
-            \documentclass{standalone}
+            \documentclass{letter}
             \usepackage{tikz}
             \usepackage{forest}
 
@@ -139,7 +139,7 @@ def handle_proceed():
 
     
     latex_template = r'''
-    \documentclass{standalone}
+    \documentclass{letter}
     \usepackage{tikz}
     \usepackage{forest}
 

@@ -1,0 +1,352 @@
+<style>
+  html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  }
+
+  .container {
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    min-height: 100%; /* Ensure the container fills the viewport height */
+    box-sizing: border-box; /* Include padding in the element's total width and height */
+  }
+
+  @media (max-width: 991px) {
+    .container {
+      padding: 0 20px;
+    }
+  }
+
+  .content-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 1544px;
+    flex-direction: column;
+  }
+
+  @media (max-width: 991px) {
+    .content-wrapper {
+      max-width: 100%;
+    }
+  }
+
+  .author-info {
+    align-self: start;
+    display: flex;
+    gap: 0;
+    font-size: 18px;
+    color: #151515;
+    font-weight: 400;
+    text-align: center;
+    line-height: 133%;
+  }
+
+  .author-avatar {
+    aspect-ratio: 1;
+    object-fit: cover;
+    object-position: center;
+    width: 35px;
+    border-radius: 50%;
+  }
+
+  .author-name {
+    font-family: Roboto, sans-serif;
+    justify-content: center;
+    background-color: rgba(240, 240, 240, 0);
+    align-self: start;
+    margin-top: -6px;
+    padding: 14px 20px;
+  }
+
+  .main-content {
+    align-self: center;
+    margin-top: 168px;
+    width: 100%;
+    max-width: 1493px;
+  }
+
+  @media (max-width: 991px) {
+    .main-content {
+      max-width: 100%;
+      margin-top: 40px;
+    }
+  }
+
+  .content-layout {
+    gap: 20px;
+    display: flex;
+  }
+
+  @media (max-width: 991px) {
+    .content-layout {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+    }
+  }
+
+  .image-column {
+    display: flex;
+    flex-direction: column;
+    line-height: normal;
+    width: 34%;
+    margin-left: 0;
+  }
+
+  @media (max-width: 991px) {
+    .image-column {
+      width: 100%;
+    }
+  }
+
+  .tree-image {
+    aspect-ratio: 1.16;
+    object-fit: cover;
+    object-position: center;
+    width: 50%;
+    margin-left: 300px; /* Adds space to the left of the image */
+    margin-top: -50px; /* Adds space to the left of the image */
+  }
+
+  @media (max-width: 991px) {
+    .tree-image {
+      max-width: 100%;
+      margin-top: 22px;
+    }
+  }
+
+  .text-column {
+    display: flex;
+    flex-direction: column;
+    line-height: normal;
+    width: 66%;
+    margin-left: 20px;
+  }
+
+  @media (max-width: 991px) {
+    .text-column {
+      width: 100%;
+    }
+  }
+
+  .text-content {
+    display: flex;
+    margin-top: 57px;
+    flex-grow: 1;
+    padding-bottom: 80px;
+    flex-direction: column;
+    font-weight: 400;
+  }
+
+  @media (max-width: 991px) {
+    .text-content {
+      max-width: 100%;
+      margin-top: 40px;
+    }
+  }
+
+  .title {
+    color: #151515;
+    letter-spacing: -4px;
+    font: italic 80px/80px Roboto, sans-serif;
+    margin-top: -50px;
+  }
+
+  @media (max-width: 991px) {
+    .title {
+      max-width: 100%;
+      font-size: 40px;
+      line-height: 28px;
+    }
+  }
+
+  .description {
+    color: #151515;
+    font: 15px/26px Roboto, sans-serif;
+    margin-top: -50px;
+    margin-left: 10px;
+  }
+
+  @media (max-width: 991px) {
+    .description {
+      max-width: 100%;
+    }
+  }
+
+  .input-wrapper {
+    display: flex;
+    margin-top: 10px;
+    width: 583px;
+    max-width: 100%;
+    gap: 0;
+    font-size: 18px;
+    line-height: 133%;
+  }
+
+  @media (max-width: 991px) {
+    .input-wrapper {
+      flex-wrap: wrap;
+    }
+  }
+
+    .input-example { /* This is your textarea class */
+      font-family: Roboto, sans-serif;
+      font-style: italic;
+      justify-content: center;
+      align-items: start;
+      background-color: #fff;
+      color: #15151569;
+      flex-grow: 1;
+      width: fit-content; /* You can set a specific width here */
+      padding: 14px 16px;
+      resize: none; /* Disables resizing of the textarea */
+      height: 50px; /* Set a fixed height */
+      width: 1200px; /* Set a fixed width */
+  }
+
+  .input-label { /* This is your button class */
+      font-family: Roboto, sans-serif;
+      justify-content: center;
+      background-color: #151515;
+      color: #fff;
+      text-align: center;
+      padding: 14px 20px;
+      width: 800px; /* Set a fixed width */
+      height: 50px; /* Set a fixed height to match the textarea */
+      cursor: pointer; /* Changes the cursor to a hand when hovering over the button */
+  }
+
+  /* Add this if you haven't already to style the output area */
+  #output-area {
+      font-family: Roboto, sans-serif;
+      color: #151515;
+      width: 700px; /* Set a fixed width */
+      min-height: 50px; /* Set a minimum height */
+      border: 1px solid #ccc; /* Optional: adds a border around the output area */
+      margin-top: 10px; /* Spacing between the button and the output area */
+      padding: 8px; /* Padding inside the output area */
+      white-space: pre-wrap; /* Preserve formatting and line breaks */
+      word-wrap: break-word; /* Ensures the text breaks to prevent overflow */
+  }
+  
+  .alert.error {
+  color: red;
+  /* Add more styling as per your design requirements */
+  margin: 10px 0;
+  padding: 5px;
+  border: 1px solid red;
+  }
+
+  /* Add this CSS to your existing <style> block */
+
+  .guide-button-container {
+    position: absolute; /* Position the container absolutely within its relative parent */
+    top: 5px; /* Distance from the top of the container */
+    right: 20px; /* Distance from the right of the container */
+  }
+
+  .guide-button {
+    display: inline-block; /* Make the link a block-level element */
+    padding: 10px 20px; /* Padding inside the button */
+    background-color: #151515; /* Button background color */
+    color: #fff; /* Button text color */
+    text-decoration: none; /* Remove underline from the link */
+    border-radius: 5px; /* Rounded corners for the button */
+    font-family: Roboto, sans-serif; /* Font style for the button */
+    font-size: 16px; /* Font size for the button */
+    text-align: center; /* Center the text inside the button */
+    cursor: pointer; /* Change cursor to pointer on hover */
+  }
+
+  /* This ensures that .content-wrapper is positioned relatively so that .guide-button-container can be positioned absolutely within it */
+  .content-wrapper {
+    position: relative;
+  }
+</style>
+<body>
+<div class="container">
+  <div class="content-wrapper">
+    <div class="guide-button-container">
+      <a href="README.md" class="guide-button">Guide</a>
+    </div>
+    <div class="author-info">
+      <a href="https://tomsgrizzi.github.io/" target="_blank">
+        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/b887921038c94160d29dd6f8dd104d18af9136ea2d479a4a240bdfb910420188?apiKey=11971df360344c0395baf76b28a7fd71&" alt="Avatar of Tommaso Sgrizzi" class="author-avatar" />
+      </a>
+      <div class="author-name"><a href="https://tomsgrizzi.github.io/" target="_blank">by Tommaso Sgrizzi</a></div>
+    </div>
+    <main class="main-content">
+      <div class="content-layout">
+        <div class="image-column">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/c07e5cc4c85c43be5271f5c258f3af626043c274b68682c0cb45114aaad7e9b2?apiKey=11971df360344c0395baf76b28a7fd71&" alt="Syntactic tree diagram" class="tree-image" />
+        </div>
+        <div class="text-column">
+          <div class="text-content">
+            <h1 class="title">
+              Genera<span style="font-weight: 700; font-style: italic">treeX</span>
+            </h1>
+            <p class="description">
+              A quick way to generate syntactic trees from in-line notation ✨
+            </p>
+            <form action="/" method="post">
+            <div class="input-wrapper">
+              <textarea id="structure-input" class="input-example" name="structure-input" placeholder="e.g. [TP [DP] [T' [T] [vP [DP2] [VP]]]]"></textarea>
+              <button type="submit" class="input-label">Display Structure</button>
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+  <script>
+    document.getElementById('structure-input').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        // Prevent the default action to stop from inserting a newline
+        event.preventDefault();
+        // Submit the form
+        event.target.form.submit();
+      }
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check for flash messages
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            // Display each message in an alert
+            alert("{{ message }}");
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              // Display each message in an alert
+              alert("{{ message }}");
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+
+
+      const inputField = document.getElementById('structure-input');
+      const displayButton = document.querySelector('.input-label');
+      const outputArea = document.getElementById('output-area');
+  
+      displayButton.addEventListener('click', function() {
+        const userInput = inputField.value;
+        outputArea.textContent = userInput; // Display the user input in the output area
+        outputArea.style.whiteSpace = 'pre-wrap'; // Preserve formatting
+      });
+    });
+  </script>
+  
+</body>

@@ -443,6 +443,7 @@
                 function proceed() {
                   document.getElementById('loadingMessage').style.display = 'block';
                   var storedNodePairs = JSON.parse(localStorage.getItem('nodePairs'));
+                  localStorage.removeItem('nodePairs');
 
                   fetch('/handle_proceed', {
                     method: 'POST',
@@ -470,6 +471,7 @@
                       }
                     }
                   })
+                  document.getElementById('proceed-button').disabled = true;
                   .catch(error => {
                     document.getElementById('loadingMessage').style.display = 'none'; // Hide the loading message
                     console.error('Error:', error);

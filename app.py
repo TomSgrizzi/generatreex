@@ -224,11 +224,15 @@ def handle_proceed():
     if os.path.exists("document.pdf"):
         # Clear the user_input from the session
         session.pop('user_input', None)
+
+        session.pop('node_pairs', None) 
         # Return the URL for the download page
         return jsonify({"message": "The PDF file has been created", "url": url_for('download_page')})
     else:
         # Clear the user_input from the session
         session.pop('user_input', None)
+
+        session.pop('node_pairs', None) 
         # Redirect to the main page
         return redirect(url_for('main'))
 

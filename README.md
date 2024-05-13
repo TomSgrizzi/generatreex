@@ -14,7 +14,7 @@ To use GeneraTreeX, navigate to the application's webpage. You will be presented
 
 The input for GeneraTreeX must follow a specific in-line notation. The notation should begin with an opening square bracket `[` and end with a closing square bracket `]`. Within these brackets, you will define the structure of your tree.
 
-# Forbidden characters:
+### Forbidden characters:
 
 This is a list of characters that might either not be present in the output, or give rise to an error:
 - ` _ `, `,`, `&`, `%`, `[`, `]`, `?`, `!`, `|`, `/`, `\`

@@ -174,6 +174,112 @@ def handle_proceed():
     corrected_string = re.sub(r"name=+", "name=", modified_string)
     print("The processed tree structure is: " + corrected_string)
 
+    ################  ISOLATING EACH CASES #######################
+
+    def extract_words(sentence):
+        words = []
+        current_word = ''
+
+        inside_brackets = False
+        for char in sentence:
+            if char == '[':
+                inside_brackets = True
+                if current_word:
+                    words.append(current_word)
+                    current_word = ''
+            elif char == ']':
+                inside_brackets = False
+                if current_word:
+                    words.append(current_word)
+                    current_word = ''
+            elif char == ' ' and not inside_brackets:
+                if current_word:
+                    words.append(current_word)
+                    current_word = ''
+            else:
+                current_word += char
+
+        if current_word:
+            words.append(current_word)
+
+        return words
+
+    # Example usage:
+
+    content_with_multiple_names = extract_words(corrected_string)
+    print(content_with_multiple_names)
+    # List: ["T',name=T' ", 'il,name=il Giulio,name=Giulio ', 'mangia,name=mangia ', 'la,name=la mela,name=mela bruna,name=bruna']
+
+
+    ######## TENIAMO SOLO GLI ELEMENTI CHE SONO PROBLEMATICI #########
+
+    def filter_elements_with_multiple_names(lst):
+        """
+        Filters elements in the list that contain the word 'name' more than once.
+        
+        Parameters:
+        lst (list): The list to filter.
+
+        Returns:
+        list: A list containing only elements with 'name' occurring more than once.
+        """
+        filtered_list = []
+        for item in lst:
+            if item.count("name") > 1:
+                filtered_list.append(item)
+        return filtered_list
+
+    # Example usage:
+    filtered_result = filter_elements_with_multiple_names(content_with_multiple_names)
+    print(str(filtered_result) + " filtered result checkpoint")
+    # ['il,name=il Giulio,name=Giulio ', 'la,name=la mela,name=mela bruna,name=bruna']
+
+
+    ######## HANDLING OF SPACES ################
+    if filtered_result:
+        def store_words_before_comma(input_string):
+            words = ""
+            word_list = []
+            for char in input_string:
+                if char == ',':
+                    if words:  # Add the accumulated words before the comma to the list
+                        word_list.append(words.strip())
+                    words = ""
+                else:
+                    words += char
+            if words:  # Append the last word if there's no comma at the end
+                word_list.append(words.strip())
+
+            # Reconstruct the sentence from the filtered words
+            result = ' '.join(word_list)
+
+            equal_words = result.split()
+
+            filtered_words = [word for word in equal_words if "=" not in word]
+
+            output = ' '.join(filtered_words)
+            return output
+
+        def substitute_word(text, old_word, new_word):
+            return text.replace(old_word, new_word)
+
+        print(""" 
+                The benchmark is  """ + str(filtered_result))
+
+        for i in filtered_result:
+
+            corrected_label = store_words_before_comma(i)
+            print(corrected_label + " was: " + i)
+
+            new_label = corrected_label+",name="+corrected_label
+            print("""
+                    new label is """ + new_label)
+            new_output = substitute_word(corrected_string, i, new_label)
+            corrected_string = new_output
+            print("Now the string is " + new_output)
+
+        corrected_string = new_output
+
     print("The pairs of nodes are: ", node_pairs)
 
     tikz_string_template = "\draw[->,dotted] ({source}) to[out=south west,in=south west] ({goal});"

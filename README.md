@@ -1,6 +1,6 @@
 # GeneraTreeX User Guide
 
-Welcome to GeneraTreeX, a robust tool designed to swiftly generate syntactic trees from in-line notation. This user-friendly application simplifies the process of creating complex syntactic tree diagrams for linguistic analysis and studies.
+Welcome to GeneraTreeX, a simple tool designed to generate syntactic trees from in-line notation. This user-friendly application is meant to simplify the process of creating complex syntactic tree diagrams for linguistic analysis and studies.
 
 ## What is GeneraTreeX?
 
@@ -24,7 +24,7 @@ Here is a sample input that demonstrates the expected format:
 
 ## Steps for Generating a Syntactic Tree
 
-1. **Structure Input**: Enter your syntactic structure in the provided text area using the in-line notation format.
+1. **Structure Input**: Enter your syntactic structure in the provided text area using the in-line notation format. It is important that each node has a unique label if you want to draw movement lines.
 
 2. **Validation**: The application will check if your structure begins with an opening square bracket `[`. If not, you will receive an error prompting you to correct your input.
 
@@ -32,7 +32,7 @@ Here is a sample input that demonstrates the expected format:
 
 4. **Confirmation**: Once your input is validated, you will be asked to confirm if you want to represent movement lines in your syntactic tree.
 
-5. **Movement Lines (Optional)**: If you choose to add movement lines, you will be instructed to submit pairs of node labels that you wish to connect with movement lines. Each pair should be separated by a comma. For example: `DP1, DP2`.
+5. **Movement Lines (Optional)**: If you choose to add movement lines, you will be instructed to submit pairs of node labels that you wish to connect with movement lines. Each pair should be separated by a comma. For example: `DP1, DP2`. Press "Submit" to enter the next pair of nodes. 
 
 6. **Proceed**: After submitting the node pairs, click on the "Proceed" button to generate your diagram.
 
@@ -58,4 +58,8 @@ While using GeneraTreeX, you may encounter the following errors:
 
 - Use a modern browser for the best experience.
 
-GeneraTreeX is designed to be a straightforward and efficient tool for visualizing syntactic structures. We hope this guide helps you use the application effectively. Enjoy creating your syntactic trees!
+## Next Improvements
+
+- Adjustment of the movement lines based on the distance among the nodes, to prevent lines and nodes from crossing and overlapping.
+
+GeneraTreeX is designed to be a straightforward and efficient tool for visualizing syntactic structures. I hope this guide helps you use the application effectively. Enjoy creating your syntactic trees!

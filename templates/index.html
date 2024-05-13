@@ -1,9 +1,32 @@
 <style>
   html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+
+  .desktop-only {
+    display: block;
+  }
+
+  .mobile-message {
+    display: none;
+   
+    text-align: center; /* Center text horizontally */
+  }
+
+  /* Hide desktop content and show the mobile message on smaller screens */
+  @media screen and (max-width: 768px) {
+    .desktop-only {
+      display: none;
+    }
+
+    .mobile-message {
+      display: block;
+    }
   }
 
   .container {
@@ -267,6 +290,32 @@
   .content-wrapper {
     position: relative;
   }
+
+  @media (max-width: 991px) {
+    .input-wrapper {
+      flex-direction: column;
+      align-items: center; /* Center the children */
+    }
+
+    .input-example, .input-label {
+      width: 90%; /* Make width responsive */
+      margin: 10px 0; /* Add some margin to separate elements when stacked */
+    }
+
+    .title {
+      font-size: 40px; /* Adjust font size */
+      line-height: 48px; /* Adjust line height for better readability */
+    }
+
+    .description {
+      font-size: 14px; /* Adjust font size */
+      margin: 20px 0; /* Adjust margin to give more space */
+    }
+
+    .tree-image {
+      margin-left: 0; /* Remove the fixed margin */
+    }
+  }
 </style>
 <head>
   <meta charset="UTF-8">
@@ -275,6 +324,8 @@
   <link rel="icon" type="image/png" href="/static/images/favicon.png">
 </head>
 <body>
+<div class="desktop-only">
+   
 <div class="container">
   <div class="content-wrapper">
     <div class="guide-button-container">
@@ -354,5 +405,8 @@
       });
     });
   </script>
-  
+</div> 
+<div class="mobile-message">
+  <p>Please access this site via a desktop for the best experience 🫶</p>
+</div> 
 </body>

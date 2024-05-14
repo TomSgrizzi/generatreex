@@ -281,26 +281,131 @@ def handle_proceed():
         corrected_string = new_output
 
     print("The pairs of nodes are: ", node_pairs)
+    #####cut here#####
+    def count_brackets_between_words(tree_string, start_substring, end_substring):
+        start_index = tree_string.find("["+start_substring)
+        end_index = tree_string.find("["+end_substring)
+        
+        # Ensure that both substrings are found and start_substring comes before end_substring
+        if start_index == -1 or end_index == -1 or start_index >= end_index:
+            start_index = tree_string.find(end_substring)
+            end_index = tree_string.find(start_substring)
+            # Extract the section of the string between the two substrings
+            section = tree_string[start_index:end_index]
+        
+            # Count the number of "]" in the section
+            count = section.count(']')
+        
+            return count
+        
+        # Extract the section of the string between the two substrings
+        section = tree_string[start_index:end_index]
+        
+        # Count the number of "]" in the section
+        count = section.count(']')
+        
+        return count
+
+    benchmark_for_extra_nodes = {}
+
+    for pair in node_pairs:
+        word1 = [pair.split(',')[0].strip()]
+        word2 = [pair.split(',')[1].strip()]
+        cleaned_word1 = word1[0].replace("['", "").replace("']", "")
+        cleaned_word2 = word2[0].replace("['", "").replace("']", "")
+        print(cleaned_word1)
+        print(cleaned_word2)
+        bracket_count = count_brackets_between_words(corrected_string, cleaned_word1, cleaned_word2)
+        benchmark_for_extra_nodes[pair]=bracket_count
+        print("Number of ']' characters between '['{}' and '['{}' is: {}".format(cleaned_word1, cleaned_word2, bracket_count))
+
+    print(benchmark_for_extra_nodes)
+
+    eccedenze_dictionary = {}
+    normal_lines_dictionary = {}
+    for key, value in benchmark_for_extra_nodes.items():
+    if value > 3:
+        eccedenze_dictionary[key]=value
+    else:
+        normal_lines_dictionary[key]=value
+
+    print(eccedenze_dictionary)
+    print(normal_lines_dictionary)
 
     tikz_string_template = "\draw[->,dotted] ({source}) to[out=south west,in=south west] ({goal});"
-    tikz_code = ""
+    tikz_code = []
 
-    # Iterate over the list of node pairs
-    for pair in node_pairs:
-        # Split the pair into source and goal nodes
-        nodes = pair.split(',')
+    scope_tikz_1 = r"\begin{scope}[every node/.style={circle}] \path"
+    scope_tikz_2 = r"({source}) coordinate"
+    scope_tikz_3 = r"({coordinate_in_the_tree}); \node" 
+    scope_tikz_4 = r"[label=above:{}]"
+    scope_tikz_5 = r" at ({source})"
+    scope_tikz_6 = r"{}; \end{scope}"
+
+    coordinate_tikz = r"\coordinate ({coordinatetopivot}) at ([xshift={xcoord}cm,yshift={ycoord}cm]{coordinata_in_the_tree});"
+
+    extra_tikz = r"\draw[->,dotted] ({source}) to[out=south,in=east]({coordinatetopivot}) to[out=west,in=west]({goal});"
+
+    print(eccedenze_dictionary)
+    def assembling_modulating_formula(dic):
+    for key, value in eccedenze_dictionary.items():
+        print(value)
+        xcoord = -(float(value)/2)
+        ycoord = -(float(value)/2)
+        print(xcoord)
+        print(ycoord)
+        nodes = key.split(',')
+        source = nodes[0].strip()
+        goal = nodes[1].strip()
+        coord_name = "extra"+source
+        coordinate_to_pivot = "pivot"+source
+        specific_scope_2 = scope_tikz_2.format(source=source)
+        specific_scope_tikz_3 = scope_tikz_3.format(coordinate_in_the_tree=coord_name,source=source)
+        specific_scope_tikz_5 =scope_tikz_5.format(source=source)
+        total_tikz_scope = scope_tikz_1 + specific_scope_2 + specific_scope_tikz_3 + scope_tikz_4 +specific_scope_tikz_5 +scope_tikz_6
+        coordinates = coordinate_tikz.format(coordinatetopivot=coordinate_to_pivot, xcoord=xcoord,ycoord=ycoord,coordinata_in_the_tree=coord_name)
+        print(coordinates)
+        tikz_string = extra_tikz.format(source=source,coordinatetopivot=coordinate_to_pivot,goal=goal)
+        print("The first extended tikz line computed is: "+total_tikz_scope + coordinates +tikz_string)
+        tikz_code.append(total_tikz_scope + coordinates +tikz_string)
+
+
+        print(tikz_code)
+
+    #Let's store the tikz codes:
+    normal_lines_tikz = ""
+    extended_lines_tikz = ""
+
+    if normal_lines_dictionary:
+    for key, value in normal_lines_dictionary.items():
+        nodes = key.split(',')
+        print(nodes)
         if len(nodes) == 2:
             source = nodes[0].strip()
+            print(source)
             goal = nodes[1].strip()
-            movement_string = tikz_string_template.format(source=source, goal=goal)
-            tikz_code += movement_string
+            print(goal)
+            tikz_code_normal_lines = tikz_string_template.format(source=source, goal=goal)
+            print(tikz_code_normal_lines)
+            normal_lines_tikz += tikz_code_normal_lines
+            print(normal_lines_tikz)
         else:
             print("Invalid pair: ", pair)
 
-    print("The tikz code is: " + tikz_code)
+    if eccedenze_dictionary:
+        assembling_modulating_formula(eccedenze_dictionary)
+
+        for code in tikz_code:
+            extended_lines_tikz += code
+
+    print("The extended tikz lines are: "+extended_lines_tikz)
+
+    print("The tikz code is: " + str(tikz_code_normal_lines))
     latex_document = latex_template.replace("{user_input}", corrected_string)
-    latex_document = latex_document.replace("{movement_strings}", tikz_code)
-    
+    latex_document = latex_document.replace("{movement_strings}", normal_lines_tikz+extended_lines_tikz)
+
+    #####cut here#####
+
     print("Latex document:", latex_document)  # Debug print
 
     # Write the LaTeX code to a file

@@ -375,7 +375,7 @@ def handle_proceed():
     #Let's store the tikz codes:
     normal_lines_tikz = ""
     extended_lines_tikz = ""
-
+    tikz_code_normal_lines =""
     if normal_lines_dictionary:
         for key, value in normal_lines_dictionary.items():
             nodes = key.split(',')

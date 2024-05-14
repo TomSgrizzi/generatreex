@@ -14,6 +14,11 @@ To use GeneraTreeX, navigate to the application's webpage. You will be presented
 
 The input for GeneraTreeX must follow a specific in-line notation. The notation should begin with an opening square bracket `[` and end with a closing square bracket `]`. Within these brackets, you will define the structure of your tree.
 
+### Forbidden characters:
+
+This is a list of characters that might either not be present in the output, or give rise to an error:
+- ` _ `, `,`, `&`, `%`, `[`, `]`, `?`, `!`, `|`, `/`, `\`
+
 ### Example Input
 
 Here is a sample input that demonstrates the expected format:
@@ -24,7 +29,7 @@ Here is a sample input that demonstrates the expected format:
 
 ## Steps for Generating a Syntactic Tree
 
-1. **Structure Input**: Enter your syntactic structure in the provided text area using the in-line notation format. It is important that each node has a unique label if you want to draw movement lines.
+1. **Structure Input**: Enter your syntactic structure in the provided text area using the in-line notation format. It is important that each node has a unique label if you want to draw movement lines. And keep in mind that the GeneraTreeX is **case sensitive**!
 
 2. **Validation**: The application will check if your structure begins with an opening square bracket `[`. If not, you will receive an error prompting you to correct your input.
 

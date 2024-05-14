@@ -332,7 +332,7 @@ def handle_proceed():
     print(eccedenze_dictionary)
     print(normal_lines_dictionary)
 
-    tikz_string_template = f"\draw[->,dotted] ({source}) to[out=south west,in=south west] ({goal});"
+    tikz_string_template = r"\draw[->,dotted] ({source}) to[out=south west,in=south west] ({goal});"
     tikz_code = []
 
     scope_tikz_1 = r"\begin{scope}[every node/.style={circle}] \path"

@@ -5,16 +5,16 @@ import subprocess
 import re
 
 app = Flask(__name__)
-# You need to set a secret key to use sessions
+
 app.secret_key = os.environ.get('SECRET_KEY', 'default_key')
 app.config['DEBUG'] = False
 @app.route('/', methods=['GET', 'POST'])
 def main():
     if request.method == 'POST':
-        # Retrieve data from textarea
+        # Retrieving data from textarea
         user_input = request.form.get('structure-input')
         
-        def starts_with_bracket(string):
+        def starts_with_bracket(string): #optional but let's see if I'm gonna use it
             return string.startswith("[")
 
         if not user_input.startswith("["):
@@ -24,41 +24,41 @@ def main():
         if "[" not in user_input:
             return render_template('index.html')
 
-        # Count the occurrences of '[' and ']'
+        # Counting the occurrences of '[' and ']'
         count_open_brackets = user_input.count('[')
         count_close_brackets = user_input.count(']')
 
-        # Check if the counts are equal
+        # I'm checking if the counts are equal
         if count_open_brackets != count_close_brackets:
             flash('Invalid bracketing in the input. Check your structure.', 'error')
             return render_template('index.html')
 
-        # Store the user input in the session
+        # Storing the user input in the session to be used later
         session['user_input'] = user_input
         print("User input stored in session:", session['user_input'])  # Debug print
-        # Redirect to the confirmation page
+        # Redirecting to the confirmation page
         return redirect(url_for('confirm'))
     return render_template('index.html')
 
 @app.route('/confirm', methods=['GET', 'POST'])
 def confirm():
     if request.method == 'POST':
-        #Retrieve the user input
+        #Retrieve the user input to elaborate it 
         user_input = session.get('user_input', '')
         print("User input retrieved from session:", user_input)  # Debug print
-        # Retrieve the user confirmation (yes or no)
+        # Retrieve the user preference for movement (yes or no)
         user_confirmation = request.form.get('confirmation')
         print("User confirmation:", user_confirmation)  # Debug print
         # Store the confirmation in the session
         session['confirmation'] = user_confirmation
         
-        # Now you can use the confirmation in a conditional statement
+        # Using the user preference in a conditional statement so that I can create two separate routes
         if user_confirmation == 'yes':
-            # Do something if user confirms 'yes'
+            # Routing to movement options
             return redirect(url_for('movement'))
         elif user_confirmation == 'no':
-            # Do something if user confirms 'no'
-            # Step 1: Write the LaTeX Template
+            # No-movement tracks
+            # Introducing the tree template
             latex_template = r'''
             \documentclass{letter}
             \usepackage{tikz}
@@ -73,43 +73,43 @@ def confirm():
             '''
 
 
-            # Replace placeholder with user's input
+            # Replace placeholders with the input
             latex_document = latex_template.replace("{user_input}", user_input)
             print("Latex document:", latex_document)  # Debug print
 
 
-            # Write the LaTeX code to a file
+            # Writing the LaTeX code to a file
             with open("document.tex", "w") as file:
                 file.write(latex_document)
 
             subprocess.run(["pdflatex", "document.tex"])
 
             if os.path.exists("document.pdf"):
-                # Convert PDF to PNG using pdftoppm
+                # Converting PDF to PNG using pdftoppm
                 subprocess.run(["pdftoppm", "-png", "-rx", "300", "-ry", "300", "document.pdf", "output"])
                 print("The PNG file has been created.")
             else:
                 print("PDF generation failed.")
 
 
-        # Redirect to the next page or back to main, depending on your app logic
+        # Redirecting
         return redirect(url_for('download_page'))  
 
-    # Retrieve the user input from the session
+    # Retrieving the user input from the session
     user_input = session.get('user_input', '')
     if not user_input:
-        # If there's no user input in session, redirect to main to get input
+        # If there's no user input in session, let's go to main again
         return redirect(url_for('main'))
 
-    # Render the confirmation template, passing the user input
+    # Render the preference template, passing the user input
     return render_template('index2.html', user_input=user_input)
 
-# Correct the endpoint name for the download route
+# Working on the download route
 @app.route('/download')
 def download_page():
     return render_template('download.html')
 
-# Correct the endpoint name for the file download route
+# Download file page
 @app.route('/download-pdf')
 def download_pdf():
     try:
@@ -129,13 +129,13 @@ def handle_proceed():
     node_pairs = request.json.get('nodePairs', [])
 
     if node_pairs is None:
-        # Return a response asking the user to input the node pairs again
+        # Let's create an error feedback in case the node_pair is empty
         return jsonify({"error": "Node pairs are missing, please input the pairs again."}), 400
 
-    print("The pairs of nodes are: ", node_pairs)  # Make sure to print the list, not concatenate it
+    print("The pairs of nodes are: ", node_pairs)  # Debug print
 
     def is_even_lenght(lst):
-        return len(lst) % 2 == 0  # Return the result
+        return len(lst) % 2 == 0  # Return the result, again I'm not sure if I'm gonna use it
 
     
     latex_template = r'''
@@ -151,15 +151,16 @@ def handle_proceed():
     \end{forest}
     \end{document}
     '''
-    # Use a regular expression to match words that may end with an apostrophe
+    # What follows is a cumbersone solution to the proper formatting of bar nodes. L'importante è che funzioni
+    # Using a regular expression to match words that may end with an apostrophe
     pattern = re.compile(r"(\b\w+'?\b)")
 
-    # Function to add ",name=element" to each element
+    # Defining a function that adds ",name=element" to each element
     def add_name_attr(match):
         element = match.group(1)  # The matched element including an apostrophe if present
         return f"{element},name={element}"
 
-    # Replace elements in user_input using the add_name_attr function
+    # Replacing elements in user_input using the add_name_attr function
     output_tree = pattern.sub(add_name_attr, user_input)
 
     # Regular expression to match the patterns where the element after "=" is followed by an apostrophe
@@ -204,35 +205,24 @@ def handle_proceed():
 
         return words
 
-    # Example usage:
-
     content_with_multiple_names = extract_words(corrected_string)
     print(content_with_multiple_names)
-    # List: ["T',name=T' ", 'il,name=il Giulio,name=Giulio ', 'mangia,name=mangia ', 'la,name=la mela,name=mela bruna,name=bruna']
+    # Example output for future references: ["T',name=T' ", 'il,name=il Giulio,name=Giulio ', 'mangia,name=mangia ', 'la,name=la mela,name=mela bruna,name=bruna']
 
 
     ######## TENIAMO SOLO GLI ELEMENTI CHE SONO PROBLEMATICI #########
 
     def filter_elements_with_multiple_names(lst):
-        """
-        Filters elements in the list that contain the word 'name' more than once.
-        
-        Parameters:
-        lst (list): The list to filter.
-
-        Returns:
-        list: A list containing only elements with 'name' occurring more than once.
-        """
         filtered_list = []
         for item in lst:
             if item.count("name") > 1:
                 filtered_list.append(item)
         return filtered_list
 
-    # Example usage:
+    # Applying the function
     filtered_result = filter_elements_with_multiple_names(content_with_multiple_names)
     print(str(filtered_result) + " filtered result checkpoint")
-    # ['il,name=il Giulio,name=Giulio ', 'la,name=la mela,name=mela bruna,name=bruna']
+    # Example output for f. references: ['il,name=il Giulio,name=Giulio ', 'la,name=la mela,name=mela bruna,name=bruna']
 
 
     ######## HANDLING OF SPACES ################
@@ -247,10 +237,10 @@ def handle_proceed():
                     words = ""
                 else:
                     words += char
-            if words:  # Append the last word if there's no comma at the end
+            if words:  # It appends the last word if there's no comma at the end
                 word_list.append(words.strip())
 
-            # Reconstruct the sentence from the filtered words
+            # Reconstruct the sentence from the filtered words. We are almost there
             result = ' '.join(word_list)
 
             equal_words = result.split()
@@ -278,35 +268,35 @@ def handle_proceed():
             corrected_string = new_output
             print("Now the string is " + new_output)
 
-        corrected_string = new_output
+        corrected_string = new_output #halleluja
 
-    print("The pairs of nodes are: ", node_pairs)
+    print("The pairs of nodes are: ", node_pairs) 
     #####cut here#####
     def count_brackets_between_words(tree_string, start_substring, end_substring):
         start_index = tree_string.find("["+start_substring)
         end_index = tree_string.find("["+end_substring)
         
-        # Ensure that both substrings are found and start_substring comes before end_substring
+        # It's important that both substrings are found and start_substring comes before end_substring
         if start_index == -1 or end_index == -1 or start_index >= end_index:
             start_index = tree_string.find(end_substring)
             end_index = tree_string.find(start_substring)
-            # Extract the section of the string between the two substrings
+            # Extracting the section of the string between the two substrings
             section = tree_string[start_index:end_index]
         
-            # Count the number of "]" in the section
+            # Counting the number of "]" in the section
             count = section.count(']')
         
             return count
         
-        # Extract the section of the string between the two substrings
+        # Extracting the section of the string between the two substrings
         section = tree_string[start_index:end_index]
         
-        # Count the number of "]" in the section
+        # Counting the number of "]" in the section
         count = section.count(']')
         
         return count
 
-    benchmark_for_extra_nodes = {}
+    benchmark_for_extra_nodes = {}  #to be used below
 
     for pair in node_pairs:
         word1 = [pair.split(',')[0].strip()]
@@ -335,6 +325,7 @@ def handle_proceed():
     tikz_string_template = r"\draw[->,dotted] ({source}) to[out=south west,in=south west] ({goal});"
     tikz_code = []
 
+    # Dissecting the tikz line because python interprets curly brackets even when they are not used and it crashes
     scope_tikz_1 = r"\begin{scope}[every node/.style={circle}] \path"
     scope_tikz_2 = r"({source}) coordinate"
     scope_tikz_3 = r"({coordinate_in_the_tree}); \node" 
@@ -350,8 +341,8 @@ def handle_proceed():
     def assembling_modulating_formula(dic):
         for key, value in eccedenze_dictionary.items():
             print(value)
-            xcoord = -(float(value)/2)
-            ycoord = -(float(value)/2)
+            xcoord = -(float(value)/2-1) #these two are weights that must be tuned with experience, who knows
+            ycoord = -(float(value)/2-1)
             print(xcoord)
             print(ycoord)
             nodes = key.split(',')
@@ -372,7 +363,7 @@ def handle_proceed():
 
         print(tikz_code)
 
-    #Let's store the tikz codes:
+    #Let's store all the tikz codes once and for all:
     normal_lines_tikz = ""
     extended_lines_tikz = ""
     tikz_code_normal_lines =""
@@ -408,12 +399,12 @@ def handle_proceed():
 
     print("Latex document:", latex_document)  # Debug print
 
-    # Write the LaTeX code to a file
+    # Writing the LaTeX code to a file again
     with open("document.tex", "w") as file:
         file.write(latex_document)
 
     try:
-        # Run pdflatex with a timeout to avoid hanging
+        # Running pdflatex with a timeout to avoid hanging
         result = subprocess.run(["pdflatex", "document.tex"], timeout=30, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         # If the return code indicates an error, handle it
         if result.returncode != 0:
@@ -428,19 +419,15 @@ def handle_proceed():
         print("The pdflatex command timed out:", e)
         return jsonify({"error": "PDF generation timed out"}), 500
 
-
-
-    # ... (rest of your Flask route code)
-
     if os.path.exists("document.pdf"):
-        # Clear the user_input from the session
+        # Clearing the user_input from the session: our working is done let's close shop
         session.pop('user_input', None)
 
         session.pop('node_pairs', None) 
-        # Return the URL for the download page
+        # Return the URL for the download page and deliver the package
         return jsonify({"message": "The PDF file has been created", "url": url_for('download_page')})
     else:
-        # Clear the user_input from the session
+        # Clear the user_input from the session as well
         session.pop('user_input', None)
 
         session.pop('node_pairs', None) 

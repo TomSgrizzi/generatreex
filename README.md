@@ -65,6 +65,7 @@ While using GeneraTreeX, you may encounter the following errors:
 
 ## Next Improvements
 
-- Adjustment of the movement lines based on the distance among the nodes, to prevent lines and nodes from crossing and overlapping.
+- Improving the weight of the amplitude parameter of movement lines based on the structure intervening between probes and goals
+- Allowing the user to select the directions from which the lines departure from the source and arrive to the goal
 
 GeneraTreeX is designed to be a straightforward and efficient tool for visualizing syntactic structures. I hope this guide helps you use the application effectively. Enjoy creating your syntactic trees!

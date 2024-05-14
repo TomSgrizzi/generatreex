@@ -377,20 +377,20 @@ def handle_proceed():
     extended_lines_tikz = ""
 
     if normal_lines_dictionary:
-    for key, value in normal_lines_dictionary.items():
-        nodes = key.split(',')
-        print(nodes)
-        if len(nodes) == 2:
-            source = nodes[0].strip()
-            print(source)
-            goal = nodes[1].strip()
-            print(goal)
-            tikz_code_normal_lines = tikz_string_template.format(source=source, goal=goal)
-            print(tikz_code_normal_lines)
-            normal_lines_tikz += tikz_code_normal_lines
-            print(normal_lines_tikz)
-        else:
-            print("Invalid pair: ", pair)
+        for key, value in normal_lines_dictionary.items():
+            nodes = key.split(',')
+            print(nodes)
+            if len(nodes) == 2:
+                source = nodes[0].strip()
+                print(source)
+                goal = nodes[1].strip()
+                print(goal)
+                tikz_code_normal_lines = tikz_string_template.format(source=source, goal=goal)
+                print(tikz_code_normal_lines)
+                normal_lines_tikz += tikz_code_normal_lines
+                print(normal_lines_tikz)
+            else:
+                print("Invalid pair: ", pair)
 
     if eccedenze_dictionary:
         assembling_modulating_formula(eccedenze_dictionary)

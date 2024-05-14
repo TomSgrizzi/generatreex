@@ -332,7 +332,7 @@ def handle_proceed():
     print(eccedenze_dictionary)
     print(normal_lines_dictionary)
 
-    tikz_string_template = "\draw[->,dotted] ({source}) to[out=south west,in=south west] ({goal});"
+    tikz_string_template = f"\draw[->,dotted] ({source}) to[out=south west,in=south west] ({goal});"
     tikz_code = []
 
     scope_tikz_1 = r"\begin{scope}[every node/.style={circle}] \path"
@@ -348,26 +348,26 @@ def handle_proceed():
 
     print(eccedenze_dictionary)
     def assembling_modulating_formula(dic):
-    for key, value in eccedenze_dictionary.items():
-        print(value)
-        xcoord = -(float(value)/2)
-        ycoord = -(float(value)/2)
-        print(xcoord)
-        print(ycoord)
-        nodes = key.split(',')
-        source = nodes[0].strip()
-        goal = nodes[1].strip()
-        coord_name = "extra"+source
-        coordinate_to_pivot = "pivot"+source
-        specific_scope_2 = scope_tikz_2.format(source=source)
-        specific_scope_tikz_3 = scope_tikz_3.format(coordinate_in_the_tree=coord_name,source=source)
-        specific_scope_tikz_5 =scope_tikz_5.format(source=source)
-        total_tikz_scope = scope_tikz_1 + specific_scope_2 + specific_scope_tikz_3 + scope_tikz_4 +specific_scope_tikz_5 +scope_tikz_6
-        coordinates = coordinate_tikz.format(coordinatetopivot=coordinate_to_pivot, xcoord=xcoord,ycoord=ycoord,coordinata_in_the_tree=coord_name)
-        print(coordinates)
-        tikz_string = extra_tikz.format(source=source,coordinatetopivot=coordinate_to_pivot,goal=goal)
-        print("The first extended tikz line computed is: "+total_tikz_scope + coordinates +tikz_string)
-        tikz_code.append(total_tikz_scope + coordinates +tikz_string)
+        for key, value in eccedenze_dictionary.items():
+            print(value)
+            xcoord = -(float(value)/2)
+            ycoord = -(float(value)/2)
+            print(xcoord)
+            print(ycoord)
+            nodes = key.split(',')
+            source = nodes[0].strip()
+            goal = nodes[1].strip()
+            coord_name = "extra"+source
+            coordinate_to_pivot = "pivot"+source
+            specific_scope_2 = scope_tikz_2.format(source=source)
+            specific_scope_tikz_3 = scope_tikz_3.format(coordinate_in_the_tree=coord_name,source=source)
+            specific_scope_tikz_5 =scope_tikz_5.format(source=source)
+            total_tikz_scope = scope_tikz_1 + specific_scope_2 + specific_scope_tikz_3 + scope_tikz_4 +specific_scope_tikz_5 +scope_tikz_6
+            coordinates = coordinate_tikz.format(coordinatetopivot=coordinate_to_pivot, xcoord=xcoord,ycoord=ycoord,coordinata_in_the_tree=coord_name)
+            print(coordinates)
+            tikz_string = extra_tikz.format(source=source,coordinatetopivot=coordinate_to_pivot,goal=goal)
+            print("The first extended tikz line computed is: "+total_tikz_scope + coordinates +tikz_string)
+            tikz_code.append(total_tikz_scope + coordinates +tikz_string)
 
 
         print(tikz_code)

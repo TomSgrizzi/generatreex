@@ -341,8 +341,8 @@ def handle_proceed():
     def assembling_modulating_formula(dic):
         for key, value in eccedenze_dictionary.items():
             print(value)
-            xcoord = -(float(value)/2-1) #these two are weights that must be tuned with experience, who knows
-            ycoord = -(float(value)/2-1)
+            xcoord = -(float(value)/2+1) #these two are weights that must be tuned with experience, who knows
+            ycoord = -(float(value)/2+1)
             print(xcoord)
             print(ycoord)
             nodes = key.split(',')

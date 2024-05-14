@@ -324,7 +324,7 @@ def handle_proceed():
     eccedenze_dictionary = {}
     normal_lines_dictionary = {}
     for key, value in benchmark_for_extra_nodes.items():
-        if value > 3:
+        if value > 2:
             eccedenze_dictionary[key]=value
         else:
             normal_lines_dictionary[key]=value
